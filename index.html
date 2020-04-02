@@ -1,19 +1,194 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn">
 <head>
-    <meta charset="UTF-8">
-	<title>Hello</title>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>腾讯课堂</title>
+  <meta name="keywords" content="腾讯课堂,腾讯教育,远程教育,公开课,网络公开课,在线学习,在线教育,在线培训,在线课堂,名师讲堂,视频课程">
+  <meta name="description" itemprop="description" content="快来直播教室观看直播课程，并参与现场讨论，让学习成就梦想！">
+  <meta itemprop="name" content="腾讯课堂-直播教室">
+  <meta itemprop="image" content="//9.url.cn/edu/lego_modules/edu-ui/0.0.1/img/nohash/logo_pc_rich.png">
+  <script>var T = { page_start: Date.now() };window._tx_webrtc_enable  = false;</script>
+  <link rel="dns-prefetch" href="//7.url.cn">
+  <link rel="dns-prefetch" href="//8.url.cn">
+  <link rel="dns-prefetch" href="//9.url.cn">
+  <link rel="stylesheet" href="//7.url.cn/edu/webcourse/index_aac57271f16b785ca20bca23382352e0.css">
+  <!--STYLE-->
+  <script>
+    T.page_css_ready = Date.now();
+    // 一个hack，处理判断聊天区是否在webcourse
+    // 下次再挂 window 我就不是人
+    window.IS_WEBCOURSE = true;
+  </script>
 </head>
 <body>
-    Hello
-	<h1>1</h1>
-	<h2>2</h2>
-	<h3>3</h3>
-	<h4>4</h4>
-	<h5>5</h5>
-	<h6>6</h6>
-	<p>Hello</p>
-	<a href=http://www.bilibili.com>bilibili</a>
-	<img src="D:\数学图\图片\67119784_p0_master1200.jpg">
-</body>
+<div id="index_aac57271f16b785ca20bca23382352e0"></div><script>function customGetComputedStyle(e,t){return e.currentStyle?e.currentStyle[t]:window.getComputedStyle&&window.getComputedStyle(e,null)?window.getComputedStyle(e,null).getPropertyValue(t):e.style[t]}window.IMWEB_WEBPACK={},IMWEB_WEBPACK.CSSARRAY=[{name:"index_aac57271f16b785ca20bca23382352e0",url:"//7.url.cn/edu/webcourse/index_aac57271f16b785ca20bca23382352e0.css"}];for(var i=0;i<IMWEB_WEBPACK.CSSARRAY.length;i++){var div=document.getElementById(IMWEB_WEBPACK.CSSARRAY[i].name);if("none"!==customGetComputedStyle(div,"display")){var newLink=document.createElement("link");newLink.rel="stylesheet",newLink.href=IMWEB_WEBPACK.CSSARRAY[i].url.replace("7.url.cn/edu","ke.qq.com"),document.head.appendChild(newLink),window.BJ_REPORT&&BJ_REPORT.report({level:2,msg:"css retry: "+newLink.href,ext:{msid:33712509}})}}</script><script>function IMWEB_WEBPACK_JS_ONLOAD(e){if(IMWEB_WEBPACK.firstLoad)for(;IMWEB_WEBPACK.jsRunCnt<IMWEB_WEBPACK.JSARRAY.length;){var n=IMWEB_WEBPACK.JSARRAY[IMWEB_WEBPACK.jsRunCnt];if(n.name===e)n.isLoad=!0,window["IMWEB_WEBPACK_"+n.name](),IMWEB_WEBPACK.jsRunCnt++;else if(-1!==n.name.indexOf("ie")&&-1===navigator.userAgent.indexOf("MSIE")){IMWEB_WEBPACK.jsRunCnt++;continue}break}else IMWEB_WEBPACK.jsLoadedCnt++,IMWEB_WEBPACK.jsLoadedCnt===IMWEB_WEBPACK.JSARRAY.length&&IMWEB_WEBPACK_RunScripts(),window.BJ_REPORT&&BJ_REPORT.report({level:2,msg:"js retry success: "+e,ext:{msid:3172411}})}IMWEB_WEBPACK.JSARRAY=[{name:"WebRTCAPI_edu_v1",url:"//7.url.cn/edu/webcourse/WebRTCAPI_edu_v1.0.2.min.js"},{name:"ie_polyfill_4a89f91cc89f07af2869",url:"//7.url.cn/edu/webcourse/ie_polyfill_4a89f91cc89f07af2869.js"},{name:"vendor_30424c7381e8e192db2b",url:"//7.url.cn/edu/webcourse/vendor_30424c7381e8e192db2b.js"},{name:"index_8cce9af3997dfb712ab2",url:"//7.url.cn/edu/webcourse/index_8cce9af3997dfb712ab2.js"}],IMWEB_WEBPACK.firstLoad=!0,IMWEB_WEBPACK.jsRunCnt=0;</script>
+<div class="ke_overlay pre" id="preloading">
+  <div class="ke_overlay_content loading">
+    <div class="ke_loading"></div>
+  </div>
+</div>
+<div id="react-body" class="web">
+</div>
+<!--只在IE下注入ie_polyfill-->
+<script>/* eslint-disable */
+(function() {
+  var location = window.location;
+  var href = location.href;
+  var protocol = location.protocol;
+  if (protocol === 'http:') {
+    location.protocol = 'https:';
+  }
+  // 移动设备进入web化课堂跳转任务详情页
+  var reg = /(iphone|ios|android|mini|mobile|mobi|Nokia|Symbian|iPod|iPad|Windows\s+Phone|MQQBrowser|wp7|wp8|UCBrowser7|UCWEB|360\s+Aphone\s+Browser)/i;
+  if(reg.test(navigator.userAgent)){
+    var cidResult = href.match(/[?#&](course_id|cid)=(\d+)/);
+    var tidResult = href.match(/[?#&]term_id=(\d+)/);
+    var taidResult = href.match(/[?#&]taid=(\d+)/);
+    var fromResult = href.match(/[?#&]from=(\w+)/);
+    var isLiteResult = href.match(/[?#&]lite=(\d+)/);
+    var vidResult = href.match(/[?#&]vid=(\d+)/)
+    var cid = cidResult && cidResult[2];
+    var tid = tidResult && tidResult[1];
+    var taid = taidResult && taidResult[1];
+    var from = fromResult && fromResult[1];
+    var lite = isLiteResult && isLiteResult[1];
+    var vid = vidResult && vidResult[1];
+    if (!lite) {
+      var url = '//m.ke.qq.com/taskList.html?_bid=167&_wv=1&cid=' + cid + '&tid=' + tid + '&taid=' + taid + '&from=' + from + '&fr=2';
+    } else {
+      if (taid) {
+        var url = '//m.ke.qq.com/m-core/taskList.html?_bid=167&_wv=3&cid=' + cid + '&tid=' + tid + '#taid=' + taid + '&vid=' + vid;
+      } else {
+        var url = '//m.ke.qq.com/m-core/live.html?_bid=167&_wv=1&cid=' + cid + '&term_id=' + tid + '&from=' + from + '&lite=' + lite;
+      }
+    }
+    window.location.href = url;
+  }
+  // 不允许四级域名访问，做一下跳转
+  if (location.host !== 'ke.qq.com') {
+    window.location.href = href.replace(location.host, 'ke.qq.com');
+  }
+  // 兼容题库嵌入需求
+  location.hash = location.hash.replace(/\?.*/, '');
+  var task_id = location.hash.match(/task_id=(.*?)(&|$)/),
+    exam_id = location.hash.match(/exam_id=(.*?)(&|$)/),
+    has_taid = /taid=/.test(location.hash),
+    has_vid = /vid=/.test(location.hash);
+  task_id && !has_taid && (window.location.hash += '&taid=' + task_id[1]);
+  exam_id && !has_vid && (window.location.hash += '&vid=' + exam_id[1]);
+  // IE8/9/10 跳旧版
+  var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+  window.isIE = userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器
+  window.isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
+  if (window.isIE && !window.isIE11) {
+    // window.location.href = href.replace(/webcourse/, 'webcourse_old'); // 跳转webcouse旧版
+    window.location.href = href.replace(/index\.html/, 'upgrade.html'); // 跳转提示页面
+  }
+})();
+/* eslint-enable */
+</script>
+<script>var BJ_REPORT=function(a){function b(a){var b=document.cookie.match(new RegExp("(^| )"+a+"=([^;]*)(;|$)"));return b?decodeURIComponent(b[2]):""}function c(a){return a>=200&&a<=299||304===a}if(a.BJ_REPORT)return a.BJ_REPORT;var d=[],e={},f={id:0,uin:0,url:"",combo:1,ext:null,level:4,ignore:[],random:1,delay:1e3,submit:null,repeat:5,fulllink:!1,tcode:null,initPv:!0,pvMsg:"!#imweb-badjs-pv#!",costomStringify:null,passMonitorId:!1},g="//badjs.qq.com/badjs",h="application/json; charset=utf-8",i=a.location.href,j=function(a,b){return Object.prototype.toString.call(a)==="[object "+(b||"Object")+"]"},k=function(a){return"object"==typeof a&&!!a},l=function(a){return null===a||!j(a,"Number")&&!a},m=(parseInt(b("uid_type"),10),a.onerror);a.onerror=function(b,c,d,e,g){var h=b;g&&g.stack&&(h=o(g)),j(h,"Event")&&(h+=h.type?"--"+h.type+"--"+(h.target?h.target.tagName+"::"+h.target.src:""):"");var i={msg:h,level:4,target:c,rowNum:d,colNum:e};f.jsErrorMSID&&(i.ext={msid:f.jsErrorMSID}),B.push(i),y(),m&&m.apply(a,arguments)};var n=function(a){try{if(a.stack){var b=a.stack.match("https?://[^\n]+");b=b?b[0]:"";var c=b.match(":(\\d+):(\\d+)");c||(c=[0,0,0]);return{msg:o(a),rowNum:c[1],colNum:c[2],target:b.replace(c[0],"")}}return a.name&&a.message&&a.description?{msg:f.customStringify?f.customStringify(a):JSON.stringify(a)}:a}catch(b){return a}},o=function(a){var b=a.stack.replace(/\n/gi,"").split(/\bat\b/).slice(0,5).join("@").replace(/\?[^:]+/gi,""),c=a.toString();return b.indexOf(c)<0&&(b=c+"@"+b),b},p=function(a){if(!k(a))return!0;var b=a.msg;return(e[b]=(parseInt(e[b],10)||0)+1)>f.repeat},q=function(a,b){var c=[],d=[],e=[];if(k(a)){if(a.level=a.level||f.level,!a.ext){var g=null;switch(a.level){case 1:g=f.debugMSID;break;case 2:g=f.infoMSID;break;case 4:g=f.errorMSID}g&&(a.ext={msid:g})}for(var h in a){var i=a[h];if(!l(i)){if(k(i))try{i=f.customStringify?f.customStringify(i):JSON.stringify(i)}catch(a){i="[BJ_REPORT detect value stringify error] "+a.toString()}e.push(h+":"+i),c.push(h+"="+encodeURIComponent(i)),"id"!==h&&d.push(h+"["+b+"]="+encodeURIComponent(i))}}}return[d.join("&"),e.join(","),c.join("&")]},r=function(a){(new Image).src=a.replace(f.url,g)},s=function(a){if(f.submit)f.submit(a);else{var b=u(a);if(f.fulllink){var d=new XMLHttpRequest;d.open("post",b.url),d.setRequestHeader("content-type",h),d.send(b.data),d.onload=function(){var b,e=c(d.status);if(e)try{b=JSON.parse(d.responseText)}catch(a){}(!e||b&&"number"==typeof b.err&&0!==b.err)&&r(a)}}else r(a)}},t=function(a){setTimeout(function(){s(a)},0)},u=function(a){var b=v(a),c=b[0],d=b[1],e=[];if(f.fulllink){"string"==typeof d.msg&&(d.msg=[d.msg],d.level=[d.level],d.ext&&(d.ext=[d.ext]));for(var g=0;g<d.msg.length;g++){var h={content:d.msg[g],level:+d.level[g]};if(d.ext&&d.ext[g])try{var i=JSON.parse(d.ext[g]),j=parseInt(i,10);"number"==typeof j&&j===j?(h.ext={msid:parseInt(i,10)},f.passMonitorId&&(h.pass_fields=h.pass_fields||{},h.pass_fields.monitor_id=i.toString())):i.msid&&(h.ext={msid:parseInt(i.msid,10)},f.passMonitorId&&(h.pass_fields=h.pass_fields||{},h.pass_fields.monitor_id=i.msid.toString()))}catch(a){}f.tcode&&(h.cmd=f.tcode),e.push(h)}d={id:d.id,uin:d.uin,from:d.from,msg:e}}return{url:c,data:f.customStringify?f.customStringify(d):JSON.stringify(d)}},v=function(a){for(var b=a.split("?"),c=b[0],d=b[1],e={},f=d.split("&"),g=0;g<f.length;g++){var h=f[g].split("="),i=decodeURIComponent(h[0]),j=decodeURIComponent(h[1]||""),k=i.match(/\[\d+]$/);if(k){var l=k[0].match(/\d+/g)[0];i=i.replace(k[0],"");var m=e[i]||[];m[l]=j,e[i]=m}else e[i]=j}return[c,e]},w=[],x=0,y=function(a){if(f.report){for(;d.length;){var b=!1,c=d.shift();if(!p(c)){var e=q(c,w.length);if(j(f.ignore,"Array"))for(var g=0,h=f.ignore.length;g<h;g++){var i=f.ignore[g];if(j(i,"RegExp")&&i.test(e[1])||j(i,"Function")&&i(c,e[1])){b=!0;break}}if(!b){if(c.id&&c.id.toString()!==f.id.toString()){var k=(f.url||"/badjs")+"?uin="+f.uin+"&from="+encodeURIComponent(location.href)+"&";t(k+e[2]+"&_t="+ +new Date)}else f.combo?w.push(e[0]):t(f.report+e[2]+"&_t="+ +new Date);f.onReport&&f.onReport(f.id,c)}}}if(w.length){var l=function(){clearTimeout(x),t(f.report+w.join("&")+"&count="+w.length+"&_t="+ +new Date),x=0,w=[]};a?l():x||(x=setTimeout(l,f.delay))}}},z=function(a,b){var c=a;return k(a)?c.level=b:c={msg:a,level:b},c},A=function(){var a=parseInt(f.id,10);f.report=(f.url||"/badjs")+"?id="+a+"&uin="+f.uin+"&from="+encodeURIComponent(location.href)+"&"},B={push:function(a){var b=location.href;if(b!==i&&(B.report(),i=b,A()),Math.random()>=f.random)return B;var c=k(a)?n(a):{msg:a};return f.ext&&!c.ext&&(c.ext=f.ext),d.push(c),y(),B},report:function(a){return a&&B.push(a),y(!0),B},error:function(a){return a?(a=z(a,4),B.push(a),B):B},info:function(a){return a?(a=z(a,2),B.push(a),B):B},debug:function(a){return a?(a=z(a,1),B.push(a),B):B},pv:function(){return B.info(f.pvMsg)},init:function(a){if(k(a))for(var c in a)f[c]=a[c];return parseInt(f.id,10)&&(/qq\.com$/gi.test(location.hostname)&&(f.url||(f.url=g),f.uin||(f.uin=b("uin")||b("uid_uin")||b("p_luin")||b("p_uin"))),f.tcode=b("im_t_c"),A(),f.initPv&&B.pv()),B},bjReq:function(a){var b=q(a,0),c=g+"?uin="+f.uin+"&id="+f.id+"&from="+encodeURIComponent(location.href)+"&";(new Image).src=c+b[0]},__onerror__:a.onerror};if("undefined"!=typeof console&&console.error&&setTimeout(function(){var a=((location.hash||"").match(/([#&])BJ_ERROR=([^&$]+)/)||[])[2];a&&console.error("BJ_ERROR",decodeURIComponent(a).replace(/(:\d+:\d+)\s*/g,"$1\n"))},0),window.onhashchange){var C=window.onhashchange;window.onhashchange=function(a){C(a),B.pv()}}else window.onhashchange=function(){B.pv()};return B}(window);"undefined"!=typeof exports&&("undefined"!=typeof module&&module.exports&&(exports=module.exports=BJ_REPORT),exports.BJ_REPORT=BJ_REPORT),function(a){if(a.BJ_REPORT){var b,c=function(b){a.BJ_REPORT.error(b)},d=a.BJ_REPORT.tryJs=function(a){return a&&(c=a),d},e=function(a,b){var c;for(c in b)a[c]=b[c]},f=function(a){return"function"==typeof a},g=function(d,e){return function(){try{return d.apply(this,e||arguments)}catch(d){if(c(d),d.stack&&console&&console.error&&console.error("[BJ-REPORT]",d.stack),!b){var f=a.onerror;a.onerror=function(){},b=setTimeout(function(){a.onerror=f,b=null},50)}throw d}}},h=function(a){return function(){for(var b,c=[],d=0,e=arguments.length;d<e;d++)b=arguments[d],f(b)&&(b=g(b)),c.push(b);return a.apply(this,c)}},i=function(a){return function(b,c){if("string"==typeof b)try{b=new Function(b)}catch(a){throw a}var d=[].slice.call(arguments,2);return b=g(b,d.length&&d),a(b,c)}},j=function(a,b){return function(){for(var c,d,e=[],h=0,i=arguments.length;h<i;h++)c=arguments[h],f(c)&&(c.tryWrap?c.tryWrap:(d=g(c),c.tryWrap=d,c=d)),e.push(c);return a.apply(b||this,e)}},k=function(a){var b,c;for(b in a)c=a[b],f(c)&&(a[b]=g(c));return a};d.spyJquery=function(){var b=a.$;if(!b||!b.event)return d;var c,e;b.zepto?(c=b.fn.on,e=b.fn.off,b.fn.on=j(c),b.fn.off=function(){for(var a,b=[],c=0,d=arguments.length;c<d;c++)a=arguments[c],f(a)&&a.tryWrap&&(a=a.tryWrap),b.push(a);return e.apply(this,b)}):window.jQuery&&(c=b.event.add,e=b.event.remove,b.event.add=j(c),b.event.remove=function(){for(var a,b=[],c=0,d=arguments.length;c<d;c++)a=arguments[c],f(a)&&a.tryWrap&&(a=a.tryWrap),b.push(a);return e.apply(this,b)});var g=b.ajax;return g&&(b.ajax=function(a,c){return c||(c=a,a=void 0),k(c),a?g.call(b,a,c):g.call(b,c)}),d},d.spyModules=function(){var b=a.require,c=a.define;return c&&c.amd&&b&&(a.require=h(b),e(a.require,b),a.define=h(c),e(a.define,c)),a.seajs&&c&&(a.define=function(){for(var a,b=[],d=0,e=arguments.length;d<e;d++)a=arguments[d],f(a)&&(a=g(a),a.toString=function(a){return function(){return a.toString()}}(arguments[d])),b.push(a);return c.apply(this,b)},a.seajs.use=h(a.seajs.use),e(a.define,c)),d},d.spySystem=function(){return a.setTimeout=i(a.setTimeout),a.setInterval=i(a.setInterval),d},d.spyCustom=function(a){return f(a)?g(a):k(a)},d.spyAll=function(){return d.spyJquery().spyModules().spySystem(),d}}}(window);</script>
+<script>// 初始化badjs，没有经过babel请勿使用ES6语法
+/* eslint-disable */
+if (window.BJ_REPORT) {
+  var BJ_REPORT = window.BJ_REPORT;
+  var ignores = [
+    '"isTrigger":true,"namespace":"","namespace_re":null', // 腾讯视频使用jquery处理已移除元素事件的错误
+    'Query is not defined', // 一些浏览器插件报错，先屏蔽
+    '$ is not defined',
+    'letv is not defined',
+    '@ showTips', // qq浏览器下腾讯视频触发的bug
+    'Unexpected identifier after numeric literal', // 老版本Edge浏览器不能识别badjs代码中的1e写法
+    "缺少 ';'", // IE浏览器已做跳转处理
+    "Expected ';'",
+    'getQualityReportFronSafariAsync', // WebRTC SDK在Safari下的bug
+    'WebViewJavascriptBridge',
+    'vi.l.qq.com', // 腾讯视频
+    'vd.l.qq.com', // 腾讯视频
+    'vm.gtimg.cn', // 腾讯视频
+    'chrome-extension',
+    'moz-extension',
+    'NotSupportedError: Failed to construct:',
+  ];
+  BJ_REPORT.init({
+    id: 1414,
+    ignore: [
+      function (error) {
+        var str = JSON.stringify(error.msg || error) || '';
+        if (error.level === 4) {
+          for (var i = 0; i < ignores.length; i++) {
+            if (str.indexOf(ignores[i]) > -1 || str.indexOf(encodeURIComponent(ignores[i])) > -1) {
+              BJ_REPORT.info(error);
+              return true;
+            }
+          }
+        }
+        return false;
+      },
+    ],
+    repeat: 1,
+    jsErrorMSID: 3233841,
+    debugMSID: 3234595,
+    infoMSID: 3234596,
+    errorMSID: 3234597,
+    fulllink: true,
+    url: '//report.edu.qq.com/data_report/web_report',
+    passMonitorId: true,
+  });
+  BJ_REPORT.tryJs().spyAll();
+}
+</script>
+<script src="//sqimg.qq.com/expert_qq/webrtc/WebRTCAPI_CLOUD_V4.js?v=1205" crossorigin="anonymous" v="1205"></script>
+<script src="//7.url.cn/edu/webcourse/WebRTCAPI_edu_v1.0.2.min.js" crossorigin="anonymous"></script>
+<!--[if IE]><script src="//7.url.cn/edu/webcourse/ie_polyfill_4a89f91cc89f07af2869.js"></script><![endif]-->
+<script src="//7.url.cn/edu/webcourse/vendor_30424c7381e8e192db2b.js" crossorigin="anonymous"></script>
+<script crossorigin="anonymous" src="//7.url.cn/edu/webcourse/index_8cce9af3997dfb712ab2.js"></script>
+<script>function IMWEB_WEBPACK_RunScripts(){for(var e=IMWEB_WEBPACK.jsRunCnt;e<IMWEB_WEBPACK.JSARRAY.length;e++){var E=IMWEB_WEBPACK.JSARRAY[e].name;-1!==E.indexOf("ie")&&-1===navigator.userAgent.indexOf("MSIE")||window["IMWEB_WEBPACK_"+E]()}}IMWEB_WEBPACK.firstLoad=!1,IMWEB_WEBPACK.jsLoadedCnt=IMWEB_WEBPACK.jsRunCnt,function(){for(var e=IMWEB_WEBPACK.jsLoadedCnt;e<IMWEB_WEBPACK.JSARRAY.length;e++){var E=IMWEB_WEBPACK.JSARRAY[e].name;if(-1===E.indexOf("ie")||-1!==navigator.userAgent.indexOf("MSIE"))if(IMWEB_WEBPACK[E])IMWEB_WEBPACK.jsLoadedCnt++;else{var n=document.createElement("script");n.src=IMWEB_WEBPACK.JSARRAY[e].url.replace("7.url.cn/edu","ke.qq.com"),document.body.appendChild(n),window.BJ_REPORT&&BJ_REPORT.report({level:2,msg:"js retry: "+n.src,ext:{msid:3182314}})}else IMWEB_WEBPACK.jsLoadedCnt++}}();</script>
+<script>T.page_js_ready = Date.now();window.__time__ = new Date().getTime();</script>
+<!--<script src="http://localhost:7476/webpack-dev-server.js?_dev"></script>-->
+<script>/**
+ * @description 百度统计上报代码
+ */
+/* eslint-disable */
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0c196c536f609d373a16d246a117fd44";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+/* eslint-enable */
+</script>
+<script>/**
+ * @description tcss点击流上报
+ */
+/* eslint-disable */
+(function () {
+  var node = document.createElement('script'),
+    script = document.getElementsByTagName('script')[0];
+  node.src = window.location.protocol === 'https:' ?
+    'https://pingjs.qq.com/tcss.ping.https.js' :
+    'http://pingjs.qq.com/tcss.ping.js';
+  node.type = 'text/javascript';
+  node.onload = node.onerror = node.onreadystatechange = function () {
+    /loaded|complete|undefined/.test(node.readyState) && (function () {
+      node.onload = node.onerror = node.onreadystatechange = null;
+      node.parentNode.removeChild(node);
+      node = undefined;
+      if (typeof window.pgvMain == 'function') {
+        window.pgvMain();
+      }
+    }());
+  };
+  script.parentNode.insertBefore(node, script);
+})();
+/* eslint-enable */
+</script>
+
+
+<script>"use strict";var __register__sw__={version:"1af7f3f94ca5aa6127163ae6df0c1e52",monitor:{support:33593251,notSupport:33593252,forceReload:33593253,autoReload:33593254,toHitCache:33593255,hitCache:33593256,cdnFailed:33593257,trySuccess:33593258,registerFailed:33593259},checkSwStatusUrl:"//sas.qq.com/cgi-bin/ke_GrayStrategy_study",checkSwStatusPushId:"491",autoRefresh:!1},monitorReport=function(){var a="https://cgi.connect.qq.com/report/report_vm",e=1e3,c=[];return function(t,o){t&&(!function(e){return e&&"[object Array]"===Object.prototype.toString.call(e)}(t)?c.push({id:t,msg:o}):Object.keys(t).forEach(function(e){t[e]&&c.push({id:t[e],msg:o})}),setTimeout(function(){!function(){var e=new Image;e.onload=e.onerror=function(){e=null};for(var t=[],o=[],r=0;r<c.length;r++){var n=c[r],i=n.id,s=n.msg;t.push(i),o.push(s)}0<c.length&&(e.src=a+"?monitors=["+t.join(",")+"]&_="+o.join(",").substr(0,1e3)+"&t="+Math.random()),c=[]}()},e))}}(),badjsReport=function(e){window.BJ_REPORT&&window.BJ_REPORT.info(e)},getCookie=function(e){var t,o=new RegExp("(^| )"+e+"=([^;]*)(;|$)");return(t=document.cookie.match(o))?unescape(t[2]):null},version=__register__sw__.version,checkSwStatusUrl=__register__sw__.checkSwStatusUrl,checkSwStatusPushId=__register__sw__.checkSwStatusPushId,monitor=__register__sw__.monitor,autoRefresh=__register__sw__.autoRefresh;function registerSw(o){var l=navigator.serviceWorker;function w(e,t){var o=e.isUseCache,r=e.reloadVersion,n=e.isRefresh,i=e.whiteUin,s=void 0===i?"":i,a=getCookie("uin")||"",c=a[a.length-1],u=-1<s.indexOf(c),d=o&&u;r&&r!==version?(monitorReport(monitor&&monitor.forceReload),registerSw(!0)):l.controller.postMessage(d),!t&&d&&function(){var e=setInterval(function(){checkSwStatusPushId&&window.imconnect&&(clearInterval(e),window.imconnect(checkSwStatusPushId,{appId:"tencentedu",modId:"sas",version:2,closeRegister:!1}).on("push",function(e){var t=e.data.body.result;l.controller&&w(t,!0)}))},200)}(),t&&n&&window.location.reload()}if(l.register("/webcourse/sw.js").then(function(e){badjsReport("sw注册成功"),e.onupdatefound=function(){var t=e.installing;t.onstatechange=function(){if("activated"===t.state&&l.controller){if(o)return void window.location.reload();console.log("New content is available; please refresh.");var e=new Event("sw-refresh");window.dispatchEvent(e)}}},console.log("ServiceWorker registration successful with scope: ",e.scope)}).catch(function(e){console.log("ServiceWorker registration failed: ",e),monitorReport(monitor&&monitor.registerFailed),badjsReport("sw注册失败:"+e.message)}),checkSwStatusUrl){o||fetch(checkSwStatusUrl).then(function(e){return e.json()}).then(function(e){l.controller&&0==+e.retcode&&w(e.result)})}}var isNotSupportBrowser=/QQBrowser/.test(navigator.userAgent)||/Android/.test(navigator.userAgent)||/Nexus/.test(navigator.userAgent);"serviceWorker"in navigator&&!isNotSupportBrowser?(monitorReport(monitor&&monitor.support),window.addEventListener("DOMContentLoaded",function(){autoRefresh&&monitorReport(monitor&&monitor.autoReload),registerSw(autoRefresh)})):monitorReport(monitor&&monitor.notSupport);</script></body>
 </html>
