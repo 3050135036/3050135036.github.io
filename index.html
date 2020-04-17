@@ -1,15 +1,53 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
+<html lang="en">
+<head>
     <meta charset="UTF-8">
-	<title>Holle</title>
-	<audio src="3050135036.github.io/Sou - ハレハレヤ (朗朗晴天).mp3" autoplay="autoplay"></audio>
+    <title>俄罗斯方块</title>
+    <audio src="C:\Documents and Settings\Administrator\桌面\Sou - ハレハレヤ (朗朗晴天).mp3" autoplay="autoplay" style="opacity:0" preload="auto" controls loop hidden="true"/></audio>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body background="图片地址">
-    <a href="http://www.bilibili.com">bilibili</a>//原窗口
-    <br/>
-    <a href="http://www.bilibili.com" target="_blank">bilibili</a>//新窗口
-    <br/>
-    <img src="图片地址" width="宽px" height="高px">
-</body>
+<body scroll="no">
+    <div class="bg">
+        <div class="content">
+            <!-- 游戏区域 -->
+            <div class="game" id="game"></div>
+            <!-- 提示文字: -->
+            <div class="desc">
+                <div id="nextTxt"><span>下一个</span></div>
+                <!-- 下一个方块显示区域 -->
+                <div class="next" id="next"></div>
+            </div>
+            <!-- 显示信息div -->
+            <div class="info">
+                <div id="alltime" class="infplay">已用时: <span id="time">0</span>s</div>
+                <div id="allscore" class="play">已得分: <span id="score">0</span>分</div>
+                <div id="tutorial">
+                        <p>
+                            说明: <br>-&emsp; "下"、"左"、"右"键控制方向,"上"为变形<br>
+                            -&emsp;一次消行得分可能为"10"、"30"、"60"、"100"分<br>
+                            -&emsp;游戏结束会自动停止<br>
+                        </p>
+                </div>
+            </div>
+            <footer>
+                <div id="author">
+                <p>Posted by:&emsp;Clarence</p>
+                <p>Github Address:&emsp;<a href="https://github.com/youaresherlock">Github</a></p>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <!-- 方块， 公共逻辑，比如左移等等-->
+    <script src="js/square.js"></script>
+    <!-- 生成方块，工厂 -->
+    <script src="js/squareFactory.js"></script>
+    <!-- 俄罗斯方块游戏核心 -->
+    <script src="js/game.js"></script>
+    <!-- 我的游戏区域中逻辑 -->
+    <script src="js/local.js"></script>
+    <!-- 对方游戏区域中的逻辑 -->
+    <script src="js/remote.js"></script>
+    <!-- 调用local.js,remote.js 顶层js -->
+    <script src="js/script.js"></script>
+</bodys>
 </html>
