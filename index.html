@@ -1,1 +1,200 @@
-<html> <head> <title>标题</title> </head> <body> <style> span.btn { BORDER-RIGHT: #7b9ebd 1px solid; PADDING-RIGHT: 2px; BORDER-TOP: #7b9ebd 1px solid; PADDING-LEFT: 2px; FONT-SIZE: 12px; FILTER: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#cecfde); BORDER-LEFT: #7b9ebd 1px solid; COLOR: black; PADDING-TOP: 2px; BORDER-BOTTOM: #7b9ebd 1px solid; background-color: #CCCCCC; } </style> <script language="javascript"> var doing; var candown=0; var wnum=13; var hnum=18; var grid=new Array(); var gridBuf=new Array(); for(i=0;i<=hnum;i++){ grid[i]=new Array(); gridBuf[i]=new Array(); for(j=0;j<=wnum;j++){ if(j>0 && j<wnum && i<hnum){ grid[i][j]=0; gridBuf[i][j]=0; }else{ grid[i][j]=1; gridBuf[i][j]=1; } } } var boxdata= [ [ [1,1,1,1], [0,0,0,0], [0,0,0,0], [0,0,0,0] ], [ [1,1,1,0], [1,0,0,0], [0,0,0,0], [0,0,0,0], ], [ [1,1,1,0], [0,1,0,0], [0,0,0,0], [0,0,0,0] ], [ [1,1,1,0], [0,0,1,0], [0,0,0,0], [0,0,0,0] ], [ [1,1,0,0], [0,1,1,0], [0,0,0,0], [0,0,0,0] ], [ [0,1,1,0], [1,1,0,0], [0,0,0,0], [0,0,0,0] ], [ [1,1,0,0], [1,1,0,0], [0,0,0,0], [0,0,0,0] ] ]; var colors=["black","#A0A0A0","red","#FF8000","yellow","pink"]; var gotLine=0; var box; var bGameOver=false; function getHeight(arr) { var i,j; for(i=3;i>=0;i--) for(j=0;j<4;j++) if(arr[i][j]) return i; } function getWidth(arr) { var i,j; for(i=3;i>=0;i--) for(j=0;j<4;j++) if(arr[j][i]) return i; } function Box(x,y,arr,color) { this.arr=arr; this.x=x; this.y=y; this.w=getWidth(arr); this.h=getHeight(arr); this.color=color; this.active=true; this.clearOldBox=function() { for(var j=0;j<=this.h;j++) for(var i=0;i<=this.w;i++) if(this.arr[j][i]>0) grid[this.y+j][this.x+i]=0; } this.putNewBox=function() { for(var j=0;j<=this.h;j++) for(var i=0;i<=this.w;i++) if(this.arr[j][i]>0) grid[this.y+j][this.x+i]=this.color; } this.moveLeft=function() { this.clearOldBox(); var _x=this.x-1; if(this.canMove(_x,this.y)) this.x=_x; this.putNewBox(); drawGrid(); } this.moveRight=function() { this.clearOldBox(); var _x=this.x+1; if(this.canMove(_x,this.y)) this.x=_x; this.putNewBox(); drawGrid(); } this.moveDown=function() { this.clearOldBox(); var _y=this.y+1; if(this.canMove(this.x,_y)){ this.y=_y; this.putNewBox(); drawGrid(); }else{ this.putNewBox(); drawGrid(); checkLineFull(); return; } } this.rotate=function() { var tmp=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]; for(j=0;j<=this.h;j++) for(i=0;i<=this.w;i++) tmp[this.w-i][j]=this.arr[j][i]; var newBox=new Box(this.x,this.y,tmp,this.color); this.clearOldBox(); if(! newBox.canMove(this.x,this.y)) this.putNewBox(); else { box=newBox; box.putNewBox(); drawGrid(); } } this.canMove=function(x,y) { for(var j=0;j<=this.h;j++) for(var i=0;i<=this.w;i++) { if(grid[y+j][x+i]!=0 && this.arr[j][i]!=0){ candown=1;return false; } } return true; } } function drawGrid() { for(var j=0;j<hnum;j++) for(var i=0;i<wnum;i++) { if( grid[j][i]!=gridBuf[j][i]) { paintCell(j,i,grid[j][i]); } gridBuf[j][i]=grid[j][i]; } } function paintCell(i,j,color) { var htmlGrid=document.getElementById("TetrisGrid").firstChild; htmlGrid.childNodes[i].childNodes[j].style.backgroundColor=colors[color]; } function init() { var html='<table id="TetrisGrid" cellspacing=1 style="background-color:green"><tbody>'; for(var i=0;i<=hnum;i++) { html+='<tr>'; for(var j=0;j<=wnum;j++) { html+='<td width="20" height="20" style="background-color:'+colors[grid[i][j]]+';"></td>'; } html+='</tr> \r\n'; } html+='</tbody></table>'; document.write(html); } function checkLineFull() { var full,i,j,i2; var y3=box.y+box.h; var y4=box.y; for(i=y3;i>=y4;) { full=1; for(j=0;j<wnum;j++) if(grid[i][j]==0){full=0; break;} if(full==0){ --i; continue;} for(i2=i; i2>0;i2--) for(j=0;j<wnum;j++) grid[i2][j]=grid[i2-1][j]; drawGrid(); y4++; gotLine++; } checkGameOver(); } function checkGameOver() { var bOver=false; for(var j=1;j<wnum;j++) if(grid[0][j]>0){ bOver=true; break;} if(!bOver){ box=new Box((wnum-1)/2,0,boxdata[Math.floor(Math.random()*7)],Math.floor(Math.random()*5)+1); box.putNewBox(); } else { bGameOver=true; msg.innerHTML="游戏结束! 您的得分为"+gotLine*100; window.clearTimeout(doing); } } function document_onkeydown() { if(bGameOver) return; switch(event.keyCode) { case 32: down(); break; case 37: box.moveLeft(); break; case 39: box.moveRight(); break; case 38: box.rotate(); break; case 40: box.moveDown(); break; case 80: stop(); break; case 66: window.location.reload(); break; case 67: restart(); break; } } function down(){ if(window.event.keyCode==32){ clearTimeout(doing); for(i=0;i<hnum;i++){ if(candown==0){ box.moveDown(); }else{ break; } } candown=0; doing=window.setTimeout('moveDownBox()',interval); } } var interval; function moveDownBox() { interval=1000-10*(gotLine>80?80 :gotLine); msg.innerHTML=" 等级："+Math.floor(gotLine/10)+"；得分:"+gotLine*100; box.moveDown(); doing=window.setTimeout('moveDownBox()',interval); } function startGame() { init(); doing=window.setTimeout('moveDownBox()',1000); bGameOver=false; box=new Box((wnum-1)/2,0,boxdata[Math.floor(Math.random()*7)],Math.floor(Math.random()*5)+1); box.putNewBox(); drawGrid(); } var status; function stop(){ status=1; window.clearTimeout(doing); } function restart(){ if(status==1){ status=0; doing=window.setTimeout('moveDownBox()',1000); } } function keydown(){ if (document.all)document_onkeydown() } </script> <BODY onLoad="window.focus()" onkeydown="keydown()"> <table width="100%" height="100%" border="0" align="center" cellpadding="0" cellspacing="0"> <tr> <td> <table id="maintable" border="0" align="center" cellpadding="0" cellspacing="0"> <tr> <td align="center"> <span class="btn" style="width:100%; height:24px;background-color:#F0C0C0;color:#0000FF;vertical-align:middle;text-align:center">俄罗斯方块</span></td> </tr> <tr> <td style="height:20px;background-color:black;color:#00FF00;font-size:12px;"><table height="20" border="0" cellpadding="0" cellspacing="0"> <tr style="font-size:12px; color:#FFFFFF"> <td width="100%"> <a style="cursor:hand" onclick="window.location.reload()">开始（B）</a> <a style="cursor:hand" onclick="stop();">暂停（P）</a> <a style="cursor:hand" onclick="restart();">继续（C）</a></td> </tr> </table></td> </tr> <tr> <td style="height:20px;background-color:black;color:#00FF00;font-size:12px;" id="msg"> 等级：0；得分:0</td> </tr> <tr> <td height="20"> <script language=javascript> maintable.style.width=(wnum+1)*20; startGame(); </script> </td> </tr> </table></td> </tr> </table> </body> </html>
+<!DOCTYPE html>
+<html>
+
+
+        <head>
+                <title></title>
+                <style type="text/css">
+                        .c {
+                                margin: 1px;
+                                width: 19px;
+                                height: 19px;
+                                background: red;
+                                position: absolute;
+                        }
+                       
+                        .d {
+                                margin: 1px;
+                                width: 19px;
+                                height: 19px;
+                                background: gray;
+                                position: absolute;
+                        }
+                       
+                        .f {
+                                top: 0px;
+                                left: 0px;
+                                background: black;
+                                position: absolute;
+                        }
+                </style>
+        </head>
+
+
+        <body>
+        </body>
+
+
+</html>
+<script type="text/javascript">
+        var over = false,
+                shapes = ("0,1,1,1,2,1,3,1;1,0,1,1,1,2,2,2;2,0,2,1,2,2,1,2;0,1,1,1,1,2,2,2;1,2,2,2,2,1,3,1;1,1,2,1,1,2,2,2;0,2,1,2,1,1,2,2").split(";");
+        //shapes 中的每一个元素的各个数字意2两个一组，分别指该层移动的X，Y轴
+        function create(tag, css) {
+                var elm = document.createElement(tag); //创建一个tag标签
+                elm.className = css; //添加一个css样式
+                document.body.appendChild(elm); //把该标签添加到body标签中
+                return elm;
+        } //返回该标签
+        function Field(w, h) { //Field整个游戏界面的对象，没跳动一次，就是一次刷新
+                this.width = w ? w : 10;
+                this.height = h ? h : 20;
+                this.show = function() { //创建一个底层，游戏界面
+                        var f = create("div", "f")
+                        f.style.width = this.width * 20 + 'px';
+                        f.style.height = this.height * 20 + 'px';
+                }
+                this.check = function(shape, x, y, d) { //判断是否到了边缘
+                        var r1 = 0,
+                                r2 = 'GO'; //每一次所生成的4个层绝对不会存在超出左边的同时又超出右边，故r1只有一个
+                        for(var i = 0; i < 8; i += 2) {
+                                //循环横坐标，查看是够超过边距
+                                if(parseInt(shape) + x < 0 && parseInt(shape) + x < r1) {
+                                        //若向左边移动会超出边界
+                                        r1 = parseInt(shape) + x;
+                                } else if(parseInt(shape) + x >= this.width && parseInt(shape) + x > r1) {
+                                        //若向右移动会超出边界
+                                        r1 = parseInt(shape) + x;
+                                }
+                                if(parseInt(shape[i + 1]) + y >= this.height || this[parseInt(shape) + x + (parseInt(shape[i + 1]) + y) * this.width]) {
+                                        r2 = "NO";
+                                }
+                        }
+                        if(d == "move" && r2 == "GO") { //当此次操作是左右移动的话，就返回移动后的横坐标，只要没有超出边界，r1就肯定不为0
+                                return r1;
+                        } else if(d == "upchange" && r2 == "GO") { //当此次操作是变换形状时
+                                return r1 > 0 ? r1 - this.width + 1 : r1; //其实每次移动的都是该层的很坐标，以左边为准移动的
+                        } else {
+                                return r2;
+                        }
+                }
+                this.findFull = function() { //判断该行是否已经满了
+                        for(var h = 0; h < this.height; h++) { //循环底层的纵坐标
+                                var s = 0;
+                                for(var w = 0; w < this.width; w++) { //循环行坐标
+                                        s += this[w + h * this.width] ? 1 : 0 //确定每个坐标点上时候有元素，以便于确定改行是否满了
+                                }
+                                if(s == this.width) { //若改行满了，则调用removeLine方法，一处该行的每一个元素
+                                        this.removeLine(h);
+                                }
+                        }
+                }
+                //清除已经填满的行
+                this.removeLine = function(line) {
+                        for(var w = 0; w < this.width; w++) { //因为每个元素都是根据对象的横纵坐标在存储，所以需要重新循环横坐标，以便于取出每一个元素
+                                document.body.removeChild(this[w + line * this.width]); //每个元素都是在body上存在着
+                        }
+                        //移除该行之后需要让其上的每行都向下移动一行
+                        for(var l = line; l > 0; l--) {
+                                for(var i = 0; i < this.width; i++) {
+                                        this[i + l * this.width] = this[i + (l - 1) * this.width]; //把上一行的元素付给下一行的元素()
+                                        if(this[i + l * this.width]) {
+                                                this[i + l * this.width].style.top = l * 20 + 'px'; //移动
+                                        }
+                                }
+                        }
+                }
+                this.fixShape = function(shape, x, y) { //生成落地的方块
+                        var d = new Tetris("d", shape, x, y);
+                        d.show();
+                        for(var i = 0; i < 8; i += 2) { //记录每个变灰色的div层，只有成功到底底层的时候才记录
+                                //parseInt(shape) + x   记录的为该层的横坐标
+                                //parseInt(shape[i + 1]) + y    记录的为纵坐标
+                                //这样是为了this[…]是唯一。
+                                this[parseInt(shape) + x + (parseInt(shape[i + 1]) + y) * this.width] = d.divs[i / 2];
+                        }
+                }
+        }
+
+
+        function Tetris(c, t, x, y) {
+                var c = c ? c : "c"; //若C存在，则为C，不存在，则赋值
+                this.field = null;
+                this.divs = [create("div", c), create("div", c), create("div", c), create("div", c)]; //调用create方法创建元素
+                var ttt = t;
+                this.reset = function() { //创建一个方块
+                        this.x = typeof x != 'undefined' ? x : 3;
+                        this.y = typeof y != 'undefined' ? y : 0;
+                        this.shape = t ? t : (shapes[Math.floor(Math.random() * (shapes.length - 0.00001))].split(","));
+                        this.show();
+                        //当刚生的方块就不能再向下移动的时候，游戏结束
+                        if(this.field && this.field.check(this.shape, this.x, this.y, "down") == "NO") {
+                                over = true;
+                                this.field.fixShape(this.shape, this.x, this.y);
+                                alert('game over');
+                        }
+                }
+                this.show = function() { //根据生成的方案，初始化方块。
+                        for(var i = 0; i < this.divs.length; i++) {
+                                this.divs.style.left = (this.shape[i * 2] * 1 + this.x) * 20 + 'px';
+                                this.divs.style.top = (this.shape[i * 2 + 1] * 1 + this.y) * 20 + 'px';
+                        }
+                }
+                this.vMove = function() { //该方法使方块向下移动
+                        if(this.field.check(this.shape, this.x, this.y + 1, "down") == "GO") { //若还能向下移动就执行
+                                this.y++;
+                                this.show();
+                        } else {
+                                this.field.fixShape(this.shape, this.x, this.y); //不能向下移动了，就生成固定的块。
+                                this.field.findFull();
+                                this.reset();
+                        };
+                }
+                this.hMove = function(moveNo) { //该方法使方块左右移动
+                        var r = this.field.check(this.shape, parseInt(this.x) + moveNo, this.y, 'move');
+                        if(r != 'GO' && r == 0) {
+                                this.x += moveNo;
+                                this.show();
+                        }
+                }
+                this.rotate = function() { //当按动上键时，改变方块的排列方向
+                        var s = this.shape;
+                        var newShape = [3 - s[1], s[0], 3 - s[3], s[2], 3 - s[5], s[4], 3 - s[7], s[6]]; //先把坐标循环180度，然后纵横坐标互换。
+                        var r = this.field.check(newShape, this.x, this.y, 'upchange'); //调用check方法，确定时候可以改变
+                        if(r == "NO") { return; };
+                        if(r == 0) { //若为0 ，则说明改变后的块并没有超出范围，继续执行
+                                this.shape = newShape;
+                                this.show();
+                        } else if(this.field.check(newShape, this.x - r, this.y, 'move') == 0) { //超出后，根据返回值，让其向相应的方向移动。以保证并不会超出范围
+                                this.x -= r;
+                                this.shape = newShape;
+                                this.show();
+                        }
+                }
+                this.reset();
+        }
+        var f = new Field();
+        f.show();
+        var t = new Tetris();
+        t.field = f;
+        t.reset();
+        window.setInterval("if(!over)t.vMove();", 500); //调用向下移动的方法
+        document.onkeydown = function(e) { //当按上下左右键时，触发
+                if(over) return;
+                var e = window.event ? window.event : e;
+                switch(e.keyCode) {
+                        case 38: //up  当按下上键时
+                                t.rotate();
+                                break;
+                        case 40: //down
+                                t.vMove();
+                                break;
+                        case 37: //left
+                                t.hMove(-1);
+                                break;
+                        case 39: //right
+                                t.hMove(1);
+                                break;
+                }
+        }
+</script>
