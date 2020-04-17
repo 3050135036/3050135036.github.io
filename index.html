@@ -1,53 +1,415 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>俄罗斯方块</title>
-    <audio src="3050135036.github.io/Sou - ハレハレヤ (朗朗晴天).mp3" autoplay="autoplay" style="opacity:0" preload="auto" controls loop hidden="true"/></audio>
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="utf-8">
+<title>俄罗斯方块</title>
 </head>
-<body scroll="no">
-    <div class="bg">
-        <div class="content">
-            <!-- 游戏区域 -->
-            <div class="game" id="game"></div>
-            <!-- 提示文字: -->
-            <div class="desc">
-                <div id="nextTxt"><span>下一个</span></div>
-                <!-- 下一个方块显示区域 -->
-                <div class="next" id="next"></div>
-            </div>
-            <!-- 显示信息div -->
-            <div class="info">
-                <div id="alltime" class="infplay">已用时: <span id="time">0</span>s</div>
-                <div id="allscore" class="play">已得分: <span id="score">0</span>分</div>
-                <div id="tutorial">
-                        <p>
-                            说明: <br>-&emsp; "下"、"左"、"右"键控制方向,"上"为变形<br>
-                            -&emsp;一次消行得分可能为"10"、"30"、"60"、"100"分<br>
-                            -&emsp;游戏结束会自动停止<br>
-                        </p>
-                </div>
-            </div>
-            <footer>
-                <div id="author">
-                <p>Posted by:&emsp;Clarence</p>
-                <p>Github Address:&emsp;<a href="https://github.com/youaresherlock">Github</a></p>
-                </div>
-            </footer>
-        </div>
-    </div>
-    <!-- 方块， 公共逻辑，比如左移等等-->
-    <script src="js/square.js"></script>
-    <!-- 生成方块，工厂 -->
-    <script src="js/squareFactory.js"></script>
-    <!-- 俄罗斯方块游戏核心 -->
-    <script src="js/game.js"></script>
-    <!-- 我的游戏区域中逻辑 -->
-    <script src="js/local.js"></script>
-    <!-- 对方游戏区域中的逻辑 -->
-    <script src="js/remote.js"></script>
-    <!-- 调用local.js,remote.js 顶层js -->
-    <script src="js/script.js"></script>
-</bodys>
+ 
+<style type="text/css">
+.center
+{
+	position:absolute;
+	left:50%;
+	width:800px;
+	margin-left:-200px;
+}
+</style>
+ 
+<body οnlοad="init()">
+<h1 id="scene" class = "center" style="line-height:100%"></h1>
+<div style="float:left">
+<h2 id="msg" >score:0</h2>
+<h2 id="nextBlocks" style="line-height:100%"></h2>
+<button id = "btn" type="button" οnclick="onBtnClick()">开始游戏</button>
+</div>
+ 
+<script>
+ 
+var KEY_UP = 38;			//上箭头
+var KEY_DOWN = 40;			//下箭头
+var KEY_LEFT = 37;			//左箭头
+var KEY_RIGHT = 39;			//右箭头
+var KEY_SPACE = 32;			//空格键
+var BLOCK_SOLID = "█";		//实心方块
+var BLOCK_HOLLOW = "□";		//空心方块
+var BLOCK_TYPE_NUM = 7;		//方块的种类
+ 
+var width = 10;				//宽
+var height = 20;			//高
+var scene = new Array();	//场景
+var sleepTime = 400;		//延时时间
+var blocks;					//方块
+var score = 0;				//分数
+var highestScore = 0;		//最高分
+var nextBlocksType;			//下一个方块的种类
+var isGameOver = true;		//游戏是否已经结束
+var interval;				//定时器
+ 
+document.onkeydown = onKeyDown;
+ 
+//按键监听
+function onKeyDown(e){
+	if(isGameOver) return;
+	switch(e.which){
+		case KEY_LEFT: 
+			//向左移动
+			moveBlocks(-1);
+			break;
+		case KEY_RIGHT:
+			//向右移动
+			moveBlocks(1);
+			break;
+		case KEY_DOWN:
+			//跳到底部
+			skipToBottom();
+			break;
+		case KEY_UP:
+			//旋转方块
+			rotateBlocks();
+			break;
+		case KEY_SPACE:
+			//加速移动
+			drop();
+			break;
+	}
+	printScene();
+}
+ 
+//按钮
+function onBtnClick(){
+	isGameOver = false;
+	document.getElementById("btn").disabled = true;
+	//打开方块下落的定时器
+	interval = window.setInterval(function(){drapBlock()}, sleepTime);
+	getNextBlocksType();
+	produceBlocks();
+	printMsg("score:0");
+	init();
+}
+ 
+//初始化
+function init(){
+	initScene();
+	drawFrame();
+	printScene();
+}
+ 
+//产生方块
+function produceBlocks(){
+	blocks = getBlocksByType(nextBlocksType);
+	getNextBlocksType();
+	printNextBlocks();
+}
+ 
+//随机获取下一次的方块
+function getNextBlocksType(){
+	do{
+		nextBlocksType = Math.round(Math.random() * BLOCK_TYPE_NUM);
+	}while(nextBlocksType == 0);
+	nextBlocksType--;
+}
+ 
+//获取指定类型的方块
+function getBlocksByType(type){
+	var tBlocks = new Object();
+	tBlocks.x = new Array();
+	tBlocks.y = new Array();
+	switch(type){
+		case 0:	//T
+			for(var i = 0; i < 3; i++){
+				tBlocks.x[i] = width / 2 + i - 1;
+				tBlocks.y[i] = -1; 
+			}
+			tBlocks.x[3] = width / 2;
+			tBlocks.y[3] = -2;
+			tBlocks.center = 1;
+			break;
+		case 1:	//I
+			for(var i = 0; i <= 3; i++){
+				tBlocks.x[i] = width / 2 - i + 1;
+				tBlocks.y[i] = -1;
+			}
+			tBlocks.center = 1;
+			break;
+		case 2:	//O
+			for(var i = 0; i < 4; i++){
+				tBlocks.x[i] = width / 2 + i % 2 - 1;
+				tBlocks.y[i] = -2 + parseInt(i / 2);
+			}
+			tBlocks.center = -1;
+			break;
+		case 3:	//L
+			tBlocks.x[0] = width / 2 - 1;
+			tBlocks.y[0] = -2;
+			for(var i = 1; i < 4; i++){
+				tBlocks.x[i] = width / 2 + i - 2;
+				tBlocks.y[i] = -1;
+			}
+			tBlocks.center = 2;
+			break;
+		case 4:	//J
+			tBlocks.x[0] = width / 2 + 1;
+			tBlocks.y[0] = -2;
+			for(var i = 1; i < 4; i++){
+				tBlocks.x[i] = width / 2 + i - 2;
+				tBlocks.y[i] = -1;
+			}
+			tBlocks.center = 2;
+			break;
+		case 5:	//Z
+			tBlocks.x[0] = width / 2 - 1;
+			tBlocks.y[0] = -2;
+			tBlocks.x[1] = width / 2;
+			tBlocks.y[1] = -2;
+			tBlocks.x[2] = width / 2;
+			tBlocks.y[2] = -1;
+			tBlocks.x[3] = width / 2 + 1;
+			tBlocks.y[3] = -1;
+			tBlocks.center = 1;
+			break;
+		case 6:	//S
+			tBlocks.x[0] = width / 2;
+			tBlocks.y[0] = -2;
+			tBlocks.x[1] = width / 2 + 1;
+			tBlocks.y[1] = -2;
+			tBlocks.x[2] = width / 2 - 1;
+			tBlocks.y[2] = -1;
+			tBlocks.x[3] = width / 2;
+			tBlocks.y[3] = -1;
+			tBlocks.center = 0;
+			break;
+	}
+	return tBlocks;
+}
+ 
+//初始化屏幕数组
+function initScene(){
+    for(var i = 0; i < height + 2; i++){
+        scene[i] = new Array();
+        for(var j = 0; j < width + 2; j++){
+            scene[i][j] = BLOCK_HOLLOW;
+        }
+    }
+}
+ 
+//在指定位置画点
+function drawPointAt(x, y){
+	drawChAt(x, y, BLOCK_SOLID);
+}
+ 
+//清除指定位置的点
+function clearPointAt(x, y){
+	drawChAt(x, y, BLOCK_HOLLOW);
+}
+ 
+//在指定位置是否是实心方块
+function isSolidAt(x, y){
+	return getChAt(x, y) == BLOCK_SOLID;
+}
+ 
+//在指定位置画字符
+function drawChAt(x, y, s){
+    scene[y + 1][x + 1] = s;
+}
+ 
+//获取指定位置的字符
+function getChAt(x, y){
+	return scene[y + 1][x + 1];
+}
+ 
+//画边框
+function drawFrame(){	
+	for(var i = 0; i < width; i++){
+        drawChAt(i, -1, "─");
+		drawChAt(i, height, "─");
+	}
+	
+	for(var i = 0; i < height; i++){
+        drawChAt(-1, i, "│");
+		drawChAt(width, i, "│");
+	}
+	drawChAt(-1, height, "└");
+	drawChAt(width, height, "┘");
+	drawChAt(-1, -1, "┌");
+	drawChAt(width, -1, "┐");
+}
+ 
+//绘制场景
+function printScene(){
+    var str = "";
+    for(var i = 0; i < height + 2; i++){
+        for(var j = 0; j < width + 2; j++){
+			if(i > 0){
+				var k;
+				if(blocks != undefined){
+					for(k = 0; k < blocks.x.length; k++){
+						if(i == blocks.y[k] + 1 && j == blocks.x[k] + 1) break;
+					}
+				}
+				if(blocks != undefined && k != blocks.x.length){
+					str += BLOCK_SOLID;
+				}else{
+					str += scene[i][j];
+				}
+			}else{
+				str += scene[i][j];
+			}
+        }
+        str += "<br/>";
+    }
+    document.getElementById("scene").innerHTML = str;
+}
+ 
+//方块下落
+function drapBlock(){
+	if(isBump(0, 1)) fixBlocks();
+	drop();
+}
+ 
+//左右移动方块,-1向左移，1向右移
+function moveBlocks(dir){
+	if(!isBump(dir, 0))
+		move(dir);
+	printScene();
+}
+ 
+//移动方块
+function move(dir){
+	for(var i = 0, count = blocks.x.length; i < count; i++){
+		blocks.x[i] += dir;
+	}
+}
+ 
+//方块跳到底部
+function skipToBottom(){
+	while(drop()){}
+	fixBlocks();
+}
+ 
+//方块下落
+function drop(){
+	if(isBump(0, 1)) return false;
+	
+	for(var i = 0, count = blocks.x.length; i < count; i++){
+		blocks.y[i]++;
+	}
+	printScene();
+	return true;
+}
+ 
+//旋转方块
+function rotateBlocks(){
+	if(blocks.center == -1) return;	//不能旋转的方块
+ 
+	rotate(1);
+	//检测到碰撞，返回原来的位置
+	if(isBump(0, 0)) rotate(-1);	//反向旋转，即返回原来的位置
+ 
+	printScene();
+}
+ 
+//旋转, 1顺时针，-1逆时针
+function rotate(dir){
+	var cX = blocks.x[blocks.center];
+	var cY = blocks.y[blocks.center];
+	for(var i = 0, count = blocks.x.length; i < count; i++){
+		var xt = blocks.x[i];
+		if(dir == 1){
+			blocks.x[i] = cX + cY - blocks.y[i];
+			blocks.y[i] = xt - cX + cY;
+		}else{
+			blocks.x[i] = cX - cY + blocks.y[i];
+			blocks.y[i] = cX + cY - xt;
+		}
+	}
+}
+ 
+//固定方块
+function fixBlocks(){
+	for(var i = 0, count = blocks.x.length; i < count; i++){
+		if(blocks.y[i] < 0){	//游戏结束
+			gameOver();
+			return;
+		}
+		drawPointAt(blocks.x[i], blocks.y[i]);
+	}
+	produceBlocks();
+	elimLine();
+}
+ 
+//消除方块检测，有填满一行的就消去
+function elimLine(){
+	for(var y = 0; y < height; y++){
+		var x;
+		for(x = 0; x < width; x++){
+			if(getChAt(x, y) != BLOCK_SOLID) break;
+		}
+		if(x == width){
+			clearLine(y);
+			score++;
+		}
+	}
+	printMsg("score:" + score);
+}
+ 
+//消除一行
+function clearLine(y){
+	for(; y > 1; y--){
+		for(var x = 0; x < width; x++){
+			drawChAt(x, y, getChAt(x, y - 1));
+			drawChAt(x, y - 1, BLOCK_HOLLOW);
+		}
+	}
+}
+ 
+//输出信息
+function printMsg(s){
+	document.getElementById("msg").innerHTML = s;
+}
+ 
+//显示下一个方块
+function printNextBlocks(){
+	var tBlocks = getBlocksByType(nextBlocksType);
+	var str = "";
+	for(var i = 0; i < 4; i++){
+		for(var j = 0; j < 4; j++){
+			var k;
+			var count = tBlocks.x.length;
+			for(k = 0; k < count; k++){
+				if(i == tBlocks.y[k] + 3 && j == tBlocks.x[k] - width / 2 + 2) break;
+			}
+			if(k == count) str += " ";
+			else str += BLOCK_SOLID;
+		}
+		str += "<br/>";
+	}
+	document.getElementById("nextBlocks").innerHTML = str;
+}
+ 
+//是否有碰撞, dx和dy为偏移量
+function isBump(dx, dy){
+	var i;
+	var count = blocks.x.length;
+	for(i = 0; i < count; i++){
+		if(	blocks.x[i] + dx < 0 || blocks.x[i] + dx >= width ||
+			blocks.y[i] + dy >= height || 
+			isSolidAt(blocks.x[i] + dx, blocks.y[i] + dy))
+				return true;
+	}
+	return false;
+}
+ 
+//游戏结束
+function gameOver(){
+	if(highestScore < score) highestScore = score;
+	printMsg("score:" + score + "<br/>highestScore:" + highestScore + "<br/>GameOver");
+	isGameOver = true;
+	score = 0;
+	document.getElementById("btn").disabled = false;
+	window.clearInterval(interval);
+}
+ 
+</script>
+</body>
+ 
 </html>
